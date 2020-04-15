@@ -4,13 +4,14 @@
 #include "main.hpp"
 #include "FPS.hpp"
 #include "KEYDOWN.hpp"
+#include "MODEL.hpp"
 
 //########## グローバルオブジェクト ##########
 FPS *fps = new FPS(GAME_FPS_SPEED);			//FPSクラスのオブジェクトを生成
 KEYDOWN *keydown = new KEYDOWN();			//KEYDOWNクラスのオブジェクトを生成
+MODEL *cube;								//3Dモデル（cube）
 
 //########### グローバル変数 ################
-int Handle = 0;	//3Dモデルのハンドル
 
 //########## プログラムで最初に実行される関数 ##########
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -28,9 +29,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);								//Draw系関数は裏画面に描画
 
-	Handle = MV1LoadModel(MODEL_NAME);	//3Dモデル読み込み
-	if (Handle == -1) { return -1; }	//読み込み失敗
-	MV1SetPosition(Handle, VGet(100.0f, 100.0f, 100.0f));		//3Dモデル位置調整
+	cube = new MODEL(MODEL_DIR, MODEL_NAME);	//cubeの3Dモデルを生成
+	if (cube->GetIsLoad() == -1) { return -1; }	//読み込み失敗
 
 	//ゲームのメインループ
 	while (GameMainLoop())
@@ -65,7 +65,7 @@ bool GameMainLoop()
 
 	//▼▼▼▼▼ゲームのシーンここから▼▼▼▼▼
 
-	MV1DrawModel(Handle);	//3Dモデル描画
+	cube->Draw();		//3Dモデル描画
 
 	//▲▲▲▲▲ゲームのシーンここまで▲▲▲▲▲
 
@@ -85,8 +85,7 @@ void Delete_Class()
 
 	delete fps;			//fps破棄
 	delete keydown;		//keydown破棄
-
-	MV1DeleteModel(Handle);	//3Dモデル破棄
+	delete cube;		//cube破棄
 
 	return;
 }

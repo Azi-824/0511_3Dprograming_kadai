@@ -23,8 +23,6 @@
 
 #define GAME_FPS_SPEED					   60
 
-#define MODEL_NAME		R"(.\Model\cube.mqo)"	//3Dモデルの名前
-
 //############## プロトタイプ宣言 #############
 bool GameMainLoop();		//無限ループ内のゲーム処理
 void Delete_Class();		//クラスを削除する処理

@@ -152,11 +152,13 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="KEYDOWN.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MODEL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FPS.hpp" />
     <ClInclude Include="KEYDOWN.hpp" />
     <ClInclude Include="main.hpp" />
+    <ClInclude Include="MODEL.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
