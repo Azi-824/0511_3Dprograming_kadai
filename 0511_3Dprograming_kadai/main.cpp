@@ -9,6 +9,9 @@
 FPS *fps = new FPS(GAME_FPS_SPEED);			//FPSクラスのオブジェクトを生成
 KEYDOWN *keydown = new KEYDOWN();			//KEYDOWNクラスのオブジェクトを生成
 
+//########### グローバル変数 ################
+int Handle = 0;	//3Dモデルのハンドル
+
 //########## プログラムで最初に実行される関数 ##########
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -24,6 +27,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1) { return -1; }						//ＤＸライブラリ初期化処理
 
 	SetDrawScreen(DX_SCREEN_BACK);								//Draw系関数は裏画面に描画
+
+	if (Handle = MV1LoadModel(MODEL_NAME) == -1) {return -1;}	//3Dモデル読み込み
+	MV1SetPosition(Handle, VGet(320.0f, -300.0f, 600.0f));		//3Dモデル位置調整
 
 	//ゲームのメインループ
 	while (GameMainLoop())
@@ -58,6 +64,8 @@ bool GameMainLoop()
 
 	//▼▼▼▼▼ゲームのシーンここから▼▼▼▼▼
 
+	MV1DrawModel(Handle);	//3Dモデル描画
+
 	//▲▲▲▲▲ゲームのシーンここまで▲▲▲▲▲
 
 	fps->Draw(0,0);				//FPS描画
@@ -76,6 +84,8 @@ void Delete_Class()
 
 	delete fps;			//fps破棄
 	delete keydown;		//keydown破棄
+
+	MV1DeleteModel(Handle);	//3Dモデル破棄
 
 	return;
 }
