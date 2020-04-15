@@ -28,8 +28,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);								//Draw系関数は裏画面に描画
 
-	if (Handle = MV1LoadModel(MODEL_NAME) == -1) {return -1;}	//3Dモデル読み込み
-	MV1SetPosition(Handle, VGet(320.0f, -300.0f, 600.0f));		//3Dモデル位置調整
+	Handle = MV1LoadModel(MODEL_NAME);	//3Dモデル読み込み
+	if (Handle == -1) { return -1; }	//読み込み失敗
+	MV1SetPosition(Handle, VGet(100.0f, 100.0f, 100.0f));		//3Dモデル位置調整
 
 	//ゲームのメインループ
 	while (GameMainLoop())
