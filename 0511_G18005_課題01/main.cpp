@@ -9,8 +9,7 @@
 //########## グローバルオブジェクト ##########
 FPS *fps = new FPS(GAME_FPS_SPEED);			//FPSクラスのオブジェクトを生成
 KEYDOWN *keydown = new KEYDOWN();			//KEYDOWNクラスのオブジェクトを生成
-//MODEL *cube;								//3Dモデル（cube）
-MODEL *anim_model;							//3Dモデル(アニメーション)
+MODEL *cube;								//3Dモデル（cube）
 
 //########### グローバル変数 ################
 
@@ -30,23 +29,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);								//Draw系関数は裏画面に描画
 
-	// カメラの位置と向きを設定
-	SetCameraPositionAndTarget_UpVecY(VGet(1340.0f, 600.0f, -420.0f), VGet(0.0f, 400.0f, -420.0f));
-
-	// カメラのクリッピング距離を設定
-	SetCameraNearFar(16.0f, 3800.0f);
-
-	// 背景の色を灰色にする
-	SetBackgroundColor(128, 128, 128);
-
-
-	//***************** オブジェクトの生成 ***********************
-	//cube = new MODEL(MODEL_DIR, MODEL_NAME);	//cubeの3Dモデルを生成
-	//if (cube->GetIsLoad() == false) { return -1; }	//読み込み失敗
-	anim_model = new MODEL(MODEL_DIR, MODEL_ANIM_NAME);	//anim_modelの3Dモデルを生成
-	if (anim_model->GetIsLoad() == false) { return -1; }	//読み込み失敗
-	if (anim_model->AttachAnim() == false) { return -1; }	//アタッチ失敗
-
+	cube = new MODEL(MODEL_DIR, MODEL_NAME);	//cubeの3Dモデルを生成
+	if (cube->GetIsLoad() == -1) { return -1; }	//読み込み失敗
 
 	//ゲームのメインループ
 	while (GameMainLoop())
@@ -81,9 +65,7 @@ bool GameMainLoop()
 
 	//▼▼▼▼▼ゲームのシーンここから▼▼▼▼▼
 
-	//cube->Draw();		//3Dモデル描画
-
-	anim_model->Animation();	//3Dモデルアニメーション
+	cube->Draw();		//3Dモデル描画
 
 	//▲▲▲▲▲ゲームのシーンここまで▲▲▲▲▲
 
@@ -103,8 +85,7 @@ void Delete_Class()
 
 	delete fps;			//fps破棄
 	delete keydown;		//keydown破棄
-	//delete cube;		//cube破棄
-	delete anim_model;	//anim_model破棄
+	delete cube;		//cube破棄
 
 	return;
 }

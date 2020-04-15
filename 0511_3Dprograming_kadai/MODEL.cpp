@@ -13,8 +13,12 @@
 */
 MODEL::MODEL(const char *dir, const char *name)
 {
-	this->Handle = 0;		//ハンドル初期化
-	this->IsLoad = false;	//読み込めていない
+	//メンバー変数初期化
+	this->Handle = 0;			//ハンドル初期化
+	this->AnimTotalTime = 0.0;	//アニメーションの総合時間初期化
+	this->AnimNowTime = 0.0;	//現在のアニメーションの時間初期化
+	this->AnimAttachIndex = 0;	//アタッチするアニメーション番号を初期化
+	this->IsLoad = false;		//読み込めていない
 
 	std::string LoadPath;	//ロードファイル名
 	LoadPath = dir;			//ディレクトリ名
@@ -47,6 +51,59 @@ MODEL::~MODEL()
 bool MODEL::GetIsLoad()
 {
 	return this->IsLoad;
+}
+
+//アニメーションをアタッチする
+bool MODEL::AttachAnim()
+{
+
+	//走りアニメーションをアタッチ
+	this->AnimAttachIndex = MV1AttachAnim(this->Handle, 1);		
+	if (this->AnimAttachIndex == -1)	//エラー発生時
+	{
+		return false;	//アタッチ失敗
+	}
+
+	//走りアニメーションのそう時間を取得
+	this->AnimTotalTime = MV1GetAttachAnimTotalTime(this->Handle, this->AnimAttachIndex);
+
+	//アニメーション再生時間を初期化
+	this->AnimNowTime = 0.0f;
+	MV1SetAttachAnimTime(this->Handle, this->AnimAttachIndex, this->AnimNowTime);
+	if (this->AnimNowTime == -1)	//エラー発生時
+	{
+		return false;		//アタッチ失敗
+	}
+
+	return true;	//アタッチ成功
+
+}
+
+//アニメーション処理
+/*
+引数：int：アニメーション速度：指定がない場合は、デフォルトのスピードが入る
+*/
+void MODEL::Animation(int speed)
+{
+
+	//アニメーションの再生時間を進める
+	this->AnimNowTime += speed;
+
+	//アニメーション再生時間がアニメーションのそう時間を超えていたらループさせる
+	if (this->AnimNowTime >= this->AnimTotalTime)
+	{
+		//新しいアニメーション再生時間は、アニメーション再生時間からアニメーションそう時間を引いたもの
+		this->AnimNowTime -= this->AnimTotalTime;
+	}
+
+	//新しいアニメーション再生時間をセット
+	MV1SetAttachAnimTime(this->Handle, this->AnimAttachIndex, this->AnimNowTime);
+
+	//3Dモデルの描画
+	this->Draw();
+
+	return;
+
 }
 
 //位置設定
